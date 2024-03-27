@@ -1,0 +1,19 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/project0/.vs/project0/v17
+/project0/.vs/project0/v17/.wsuo
+/project0/.vs/project0/v17/Browse.VC.db
+/project0/.vs/project0/v17/Browse.VC.db-shm
+/project0/.vs/project0/v17/Browse.VC.db-wal
+/project0/.vs/project0/v17/Browse.VC.opendb
+/project0/.vs/project0/v17/DocumentLayout.json
+/project0/.vs/project0/v17/ipch/AutoPCH/7300d8d68c5ca7f5
+/project0/.vs/project0/v17/ipch/AutoPCH/7300d8d68c5ca7f5/MAIN.ipch
+/project0/.vs/ProjectSettings.json
+/project0/.vs/slnx.sqlite
+/project0/.vs/VSWorkspaceState.json
+/project0/.vs/project0/FileContentIndex/4185f06b-db8c-40ce-8290-7cbb6611d09b.vsidx
+/project0/.vs/project0/FileContentIndex
+/project1/.vs
