@@ -22,12 +22,11 @@ int main(int argc, char *argv[]) {
 	/*spliting strings to separate lines*/
 	char* token;
 	/*to nie dziala, nie umiem zapisac tego wskaznika*/
-	token= strtok(read_buff,*argv[2]);
+	token= strtok(read_buff,argv[2]);
 	while (token != NULL) {
 		printf("%s\n", token);
-		token = strtok(NULL,*argv[2]); /*tu tez*/
+		token = strtok(NULL,argv[2]); /*tu tez*/
 	}
-
 
 	return EXIT_SUCCESS;
 
