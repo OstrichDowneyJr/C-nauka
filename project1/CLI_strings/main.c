@@ -1,39 +1,36 @@
 #include "main.h"
 
 
-int main(int argc, char *argv[2]) {
+int main(int argc, char *argv[]) {
 
-	/*variables declaraion*/
-	FILE* file;
-	char read_buff[BUFF_SIZE];
-	char delimiter[DELIMITER_SIZE];
-
-	/*handling main arguments*/
-	if (argc != 2) {
+	///*handling main arguments*/
+	if (argc != 3) {
 		printf("Wrong number of arguments, expected 2\n");
 		return EXIT_FAILURE;
 	}
-
-	/*removing "" from delimiter's string*/
-	delimiter[0] ="";
-	delimiter[sizeof(delimiter-1)] ="";
+	FILE* file;
+	/*variables declaraion*/
+	char read_buff[BUFF_SIZE];
 
 	/*getting file to program's memory*/
-	file = fopen(argv[0], "r");
-	if (file == NULL) {
+	if ((file = fopen(argv[1], "r")) == NULL) {
 		printf("File opening error!\n");
 		return EXIT_FAILURE;
 	}
-	fgets(read_buff, BUFF_SIZE, file);
+	fgets(read_buff, BUFF_SIZE,file);
 	fclose(file);
-
 	/*spliting strings to separate lines*/
-	char* token = strtok(read_buff, delimiter);
+	char* token;
+	/*to nie dziala, nie umiem zapisac tego wskaznika*/
+	token= strtok(read_buff,*argv[2]);
 	while (token != NULL) {
 		printf("%s\n", token);
-		token = strtok(NULL, delimiter);
+		token = strtok(NULL,*argv[2]); /*tu tez*/
 	}
+
 
 	return EXIT_SUCCESS;
 
 }
+
+    
