@@ -1,6 +1,10 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
-#include <stdlib.h>
 #include <windows.h>
+#include <minwinbase.h>
+#include <fileapi.h>
+#include <handleapi.h>
+#include <string.h>
 
 int ListDirectoryContents(const char* sDir){
 
@@ -32,25 +36,8 @@ int ListDirectoryContents(const char* sDir){
     return 0;
 }
 
-void traverse(char* path) {
 
-	FILE* file; 
-    char buffer;
-
-	file = fopen(path, "r");
-    buffer = fgetc(file);
-
-    while (buffer != EOF)
-    {
-        printf("%c", buffer);
-        buffer = fgetc(file);
-    }
-    fclose(file);
-
-}
-
-
-int main(int argc, char** argv) {
-
+int main(int argc, char* argv[]) {
+    ListDirectoryContents(argv[1]);
 	return 0;
 }

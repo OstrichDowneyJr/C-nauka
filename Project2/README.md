@@ -1,4 +1,5 @@
-Create a simple file traversal script which takes a path to the directory as an input.
+Create a simple file traversal script which takes a path to the directory
+as an input.
 ```
 NAME
        traverse - list the files inside (but not directories) inside a folder.
