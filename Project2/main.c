@@ -14,6 +14,9 @@ int ListDirectoryContents(const char* sDir){
     char sPath[2048];
 
     sprintf(sPath, "%s\\*.txt", sDir);
+
+    printf("Searching directory: %s\n", sDir);
+    
     if ((hFind = FindFirstFile(sPath, &fdFile)) == INVALID_HANDLE_VALUE){
         printf("Path not found: [%s]\n", sDir);
         return 1;
@@ -38,6 +41,11 @@ int ListDirectoryContents(const char* sDir){
 
 
 int main(int argc, char* argv[]) {
+    if (argc < 2) {
+		printf("Usage: %s <directory>\n", argv[0]);
+		return 1;
+	}
+
     ListDirectoryContents(argv[1]);
 	return 0;
 }
