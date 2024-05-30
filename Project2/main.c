@@ -1,41 +1,37 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <windows.h>
+#include <handleapi.h>
 #include <minwinbase.h>
 #include <fileapi.h>
-#include <handleapi.h>
-#include <string.h>
+#include <errhandlingapi.h>
 
 int ListDirectoryContents(const char* sDir){
 
-    WIN32_FIND_DATA fdFile;
-    HANDLE hFind = NULL;
+    WIN32_FIND_DATA FindFileData;
+	HANDLE hFind;
+	char DirSpec[MAX_PATH];
+	snprintf(DirSpec, MAX_PATH,"%s\\*", sDir);
+	
+	if (snprintf(DirSpec, MAX_PATH, "%s\\*", sDir) >= MAX_PATH) {
+		printf("Directory path is too long.\n");
+		return 1;
+	}
 
-    char sPath[2048];
+	hFind =  FindFirstFileA(DirSpec, &FindFileData);
+	if (hFind == INVALID_HANDLE_VALUE) {
+		printf ("FindFirstFile failed (%d)\n", GetLastError());
+		return 1;
+	} 
 
-    sprintf(sPath, "%s\\*.txt", sDir);
+	do {
+		if (FindFileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
+			wprintf(TEXT("  %s   <DIR>\n"), FindFileData.cFileName);
+		else
+			wprintf(TEXT("  %s \n"), FindFileData.cFileName);
+	} while (FindNextFile(hFind, &FindFileData) != 0);
 
-    printf("Searching directory: %s\n", sDir);
-    
-    if ((hFind = FindFirstFile(sPath, &fdFile)) == INVALID_HANDLE_VALUE){
-        printf("Path not found: [%s]\n", sDir);
-        return 1;
-    }
-    do{
-        if(strcmp(fdFile.cFileName, ".") != 0 && strcmp(fdFile.cFileName, "..") != 0){
-            sprintf(sPath, "%s\\%s", sDir, fdFile.cFileName);
-
-            if (fdFile.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY){
-                printf("Directory: %s\n", sPath);
-                ListDirectoryContents(sPath);
-            }
-            else {
-                printf("File: %s\n", sPath);
-            }
-        }
-    }
-    while (FindNextFile(hFind, &fdFile)); 
-    FindClose(hFind); 
+	FindClose(hFind);
     return 0;
 }
 
