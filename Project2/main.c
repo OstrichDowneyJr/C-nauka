@@ -1,47 +1,49 @@
-#define _CRT_SECURE_NO_WARNINGS
+/**
+ * C program to list contents of a directory recursively.
+ */
+
 #include <stdio.h>
-#include <windows.h>
-#include <handleapi.h>
-#include <minwinbase.h>
-#include <fileapi.h>
-#include <errhandlingapi.h>
+#include <string.h>
+#include <dirent.h>
 
-int ListDirectoryContents(const char* sDir){
+void listFiles(char *path);
 
-    WIN32_FIND_DATA FindFileData;
-	HANDLE hFind;
-	char DirSpec[MAX_PATH];
-	snprintf(DirSpec, MAX_PATH,"%s\\*", sDir);
-	
-	if (snprintf(DirSpec, MAX_PATH, "%s\\*", sDir) >= MAX_PATH) {
-		printf("Directory path is too long.\n");
-		return 1;
-	}
 
-	hFind =  FindFirstFileA(DirSpec, &FindFileData);
-	if (hFind == INVALID_HANDLE_VALUE) {
-		printf ("FindFirstFile failed (%d)\n", GetLastError());
-		return 1;
-	} 
+int main(int argc, char *argv[]){
+    char path[100];
+    printf("Enter path to list files: ");
+    scanf("%s", path);
 
-	do {
-		if (FindFileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
-			wprintf(TEXT("  %s   <DIR>\n"), FindFileData.cFileName);
-		else
-			wprintf(TEXT("  %s \n"), FindFileData.cFileName);
-	} while (FindNextFile(hFind, &FindFileData) != 0);
+    listFiles(path);
 
-	FindClose(hFind);
     return 0;
 }
 
 
-int main(int argc, char* argv[]) {
-    if (argc < 2) {
-		printf("Usage: %s <directory>\n", argv[0]);
-		return 1;
-	}
+void listFiles(char *basePath)
+{
+    char path[1000];
+    struct dirent *dp;
+    DIR *dir = opendir(basePath);
 
-    ListDirectoryContents(argv[1]);
-	return 0;
+    if (!dir) {
+        return;
+    }
+
+    while ((dp = readdir(dir)) != NULL)
+    {
+        if (strcmp(dp->d_name, ".") != 0 && strcmp(dp->d_name, "..") != 0)
+        {
+            printf("%s\n", dp->d_name);
+
+            // Construct new path from our base path
+            strcpy(path, basePath);
+            strcat(path, "/");
+            strcat(path, dp->d_name);
+
+            listFiles(path);
+        }
+    }
+
+    closedir(dir);
 }
